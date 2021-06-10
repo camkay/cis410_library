@@ -5,13 +5,14 @@ def remove_list_item(*, the_list, the_item):
   new_list = [item for item in the_list if item != the_item] 
   return new_list
 
-def plot_x_by_class_y(*, table, x_column, y_column):
+def plot_x_by_class_y(*, table, x_column, y_column, y_log = True):
   assert isinstance(table, pd.core.frame.DataFrame), f'table is not a dataframe but instead a {type(table)}'
   assert x_column in table.columns, f'unrecognized column: {x_column}. Check spelling and case.'
   assert y_column in table.columns, f'unrecognized column: {y_column}. Check spelling and case.'
   assert table[y_column].nunique()<=5, f'y_column must be of 5 categories or less but has {table[y_column].nunique()}'
+  assert type(y_log) == bool, f'y_log must be of type bool. y_log is of type {type(y_log)}.'
 
-  pd.crosstab(table[x_column], table[y_column]).plot(kind='bar', figsize=(15,8), grid=True, logy=True)
+  pd.crosstab(table[x_column], table[y_column]).plot(kind='bar', figsize=(15,8), grid=True, logy=y_log)
   return None
 
 def pasterisk(*, my_list, thresholds = [.05, .01, .001], sig_symbol = "*"):
